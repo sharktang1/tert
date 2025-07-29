@@ -1,135 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Furniture E-Commerce UI</title>
-<link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nestify - Modern Furniture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-color: #f5f5f5;
+            --card-bg: #fafafa;
+            --text-dark: #222;
+            --text-medium: #333;
+            --text-light: #666;
+            --primary-black: #111;
+            --shadow: 0 3px 10px rgba(0,0,0,0.05);
+            --radius-md: 14px;
+            --radius-lg: 24px;
+            --radius-full: 999px;
+            --space-sm: 12px;
+            --space-md: 20px;
+            --space-lg: 32px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button, input {
+            font: inherit;
+            border: none;
+            background: none;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-sm {
+            gap: var(--space-sm);
+        }
+
+        .gap-md {
+            gap: var(--space-md);
+        }
+
+        .gap-lg {
+            gap: var(--space-lg);
+        }
+
+        .rounded {
+            border-radius: var(--radius-md);
+        }
+
+        .rounded-full {
+            border-radius: var(--radius-full);
+        }
+
+        .shadow {
+            box-shadow: var(--shadow);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-md {
+            font-size: 1rem;
+        }
+
+        .text-lg {
+            font-size: 1.25rem;
+        }
+
+        .text-xl {
+            font-size: 1.5rem;
+        }
+
+        .text-2xl {
+            font-size: 1.75rem;
+        }
+
+        .font-light {
+            font-weight: 300;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .bg-white {
+            background-color: var(--card-bg);
+        }
+
+        .bg-black {
+            background-color: var(--primary-black);
+            color: white;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            padding: var(--space-md) 0;
+            background-color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-black);
+        }
+
+        .search-container {
+            position: relative;
+            width: 45%;
+            max-width: 500px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid #ddd;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            padding-right: 50px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-black);
+            color: white;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Category Navigation */
+        .categories {
+            padding: var(--space-md) 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            white-space: nowrap;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-list {
+            display: inline-flex;
+            gap: var(--space-sm);
+        }
+
+        .category-btn {
+            padding: 8px var(--space-md);
+            border-radius: var(--radius-full);
+            background-color: white;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: 1px solid #eee;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-black);
+            color: white;
+            border-color: var(--primary-black);
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+        }
+
+        .left-content {
+            flex: 0 0 65%;
+        }
+
+        .right-sidebar {
+            flex: 0 0 35%;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        /* Product Cards */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            padding: var(--space-md);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            grid-template-rows: auto auto;
+            gap: var(--space-md);
+        }
+
+        .new-deals {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            padding: 0;
+        }
+
+        .new-deals-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+
+        .price-tag {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background-color: white;
+            padding: 8px var(--space-sm);
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            box-shadow: var(--shadow);
+        }
+
+        .rating-badge {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 6px var(--space-sm);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            position: absolute;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .action-btn.favorited {
+            color: #ff4757;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-black);
+            color: white;
+        }
+
+        .great-value {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .great-value-img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+        }
+
+        .great-value-content {
+            margin-top: var(--space-md);
+        }
+
+        .exclusive-card {
+            grid-column: 1 / 3;
+            grid-row: 2 / 3;
+            display: flex;
+        }
+
+        .exclusive-content {
+            flex: 1;
+        }
+
+        .exclusive-img {
+            width: 40%;
+            height: auto;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+
+        .exclusive-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background-color: var(--primary-black);
+            color: white;
+            padding: 4px 8px;
+            border-radius: var(--radius-md);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .open-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px var(--space-sm);
+            border-radius: var(--radius-full);
+            background-color: rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+            margin-top: var(--space-md);
+            transition: all 0.2s ease;
+        }
+
+        .open-btn:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sidebar Components */
+        .team-section, .bonus-section, .team-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-md);
+            color: var(--text-light);
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .team-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+        }
+
+        .team-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .subscribe-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .email-input {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid #ddd;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+        }
+
+        .subscribe-btn {
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .subscribe-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .team-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .table-leg {
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .left-content, .right-sidebar {
+                flex: 1 1 100%;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .new-deals, .great-value, .exclusive-card {
+                grid-column: 1 / 2;
+            }
+
+            .great-value {
+                grid-row: 2 / 3;
+            }
+
+            .exclusive-card {
+                grid-row: 3 / 4;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .flex {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .exclusive-card {
+                flex-direction: column;
+            }
+
+            .exclusive-img {
+                width: 100%;
+                height: 200px;
+                margin-top: var(--space-md);
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">Nestify</div>
-    <div class="search-bar">
-      <input type="search" aria-label="Search furniture" placeholder="Search Sofa Collection" />
-      <button aria-label="Search">
-        <svg class="icon icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
+    <header>
+        <div class="container flex items-center justify-between gap-md">
+            <div class="logo">Nestify</div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for furniture...">
+                <button class="search-btn rounded-full">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="nav-icons">
+                <button class="nav-icon" aria-label="Download app">
+                    <i class="fas fa-mobile-screen"></i>
+                </button>
+                <button class="nav-icon" aria-label="Favorites">
+                    <i class="far fa-heart"></i>
+                </button>
+                <button class="nav-icon" aria-label="Shopping cart">
+                    <i class="fas fa-bag-shopping"></i>
+                </button>
+                <div class="user-info">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User avatar" class="user-avatar">
+                    <span class="text-sm">Candice Wu</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="categories">
+        <div class="container">
+            <div class="category-list">
+                <button class="category-btn">Table</button>
+                <button class="category-btn">Dressers</button>
+                <button class="category-btn active">Sofa</button>
+                <button class="category-btn">Chair</button>
+                <button class="category-btn">Bed</button>
+                <button class="category-btn">Lamps</button>
+                <button class="category-btn">Speakers</button>
+            </div>
+        </div>
     </div>
-    <nav class="header-actions" aria-label="Primary actions">
-      <button class="icon-btn" aria-label="Download app">
-        <svg class="icon icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2" ry="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-      </button>
-      <button class="icon-btn heart-btn" aria-label="Favorite" aria-pressed="false">
-        <svg class="icon icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.75 0L12 5.65l-1.05-1.05a5.5 5.5 0 0 0-7.75 7.75l1.05 1.06L12 21.35l7.75-7.75 1.05-1.05a5.5 5.5 0 0 0 0-7.75z"/></svg>
-      </button>
-      <button class="icon-btn" aria-label="Shopping cart">
-        <svg class="icon icon-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      </button>
-      <div class="user-profile" tabindex="0">
-        <img src="https://via.placeholder.com/32" alt="User avatar" />
-        <span class="username">Candice Wu</span>
-      </div>
-    </nav>
-  </header>
 
-  <nav class="category-nav" aria-label="Product categories">
-    <button class="pill-btn">Table</button>
-    <button class="pill-btn">Dressers</button>
-    <button class="pill-btn active">Sofa</button>
-    <button class="pill-btn">Chair</button>
-    <button class="pill-btn">Bed</button>
-    <button class="pill-btn">Lamps</button>
-    <button class="pill-btn">Speakers</button>
-  </nav>
+    <main class="container main-content">
+        <div class="left-content">
+            <div class="product-grid">
+                <!-- New Deals Card -->
+                <div class="product-card new-deals shadow">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Beige curved sofa" class="new-deals-img">
+                    <div class="price-tag">$508</div>
+                    <div class="rating-badge">
+                        <i class="fas fa-star"></i>
+                        <span>4.9</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" aria-label="Add to favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="action-btn" aria-label="Add to cart">
+                            <i class="fas fa-bag-shopping"></i>
+                        </button>
+                    </div>
+                </div>
 
-  <main class="main-content">
-    <section class="left-segment">
-      <article class="card new-deals-card" role="region" aria-label="New Deals">
-        <div class="product-image-container">
-          <img src="https://via.placeholder.com/450x300?text=Curved+Sofa" alt="Curved beige sofa" />
-          <div class="price-tag">$508</div>
-          <div class="rating-badge" aria-label="Rating 4.9 stars" role="img">
-            <svg class="icon icon-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-            <span>4.9</span>
-          </div>
-          <div class="action-icons">
-            <button class="icon-btn heart-btn" aria-label="Favorite product" aria-pressed="false">
-              <svg class="icon icon-heart" viewBox="0 0 24 24"><path d="M..." /></svg>
-            </button>
-            <button class="icon-btn" aria-label="Add to cart">
-              <svg class="icon icon-bag"><path d="M..." /></svg>
-            </button>
-          </div>
+                <!-- Great Value Deals Card -->
+                <div class="product-card great-value shadow">
+                    <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80" 
+                         alt="Cream-colored chair" class="great-value-img">
+                    <div class="great-value-content">
+                        <h3 class="text-xl font-semibold">Great Value Deals</h3>
+                        <p class="text-light text-light">Find Items On Sale With 50 - 75%</p>
+                        <div class="rating-badge" style="position: static; margin-top: var(--space-sm);">
+                            <i class="fas fa-star"></i>
+                            <span>4.9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exclusive Product Card -->
+                <div class="product-card exclusive-card shadow">
+                    <div class="exclusive-content">
+                        <div class="exclusive-badge">Exclusive</div>
+                        <h3 class="text-lg font-semibold">PureSpace Focus Duo</h3>
+                        <p class="text-light">Elegant floral-patterned chair for your living space</p>
+                        <button class="open-btn">
+                            <span>Open</span>
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" 
+                         alt="Floral-patterned chair" class="exclusive-img">
+                    <button class="action-btn" style="top: var(--space-md); right: var(--space-md);">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-arrows">
+                <button class="nav-arrow" aria-label="Previous item">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="nav-arrow" aria-label="Next item">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
-        <div class="carousel-controls" aria-label="Slide new deals">
-          <button class="carousel-arrow left" aria-label="Previous deal">&#8592;</button>
-          <button class="carousel-arrow right" aria-label="Next deal">&#8594;</button>
-        </div>
-      </article>
 
-      <article class="card great-value-card" role="region" aria-label="Great Value Deals">
-        <div class="product-image-container">
-          <img src="https://via.placeholder.com/300x400?text=Minimalist+Chair" alt="Minimalist chair" />
-        </div>
-        <div class="text-overlay">
-          <h2>Great Value Deals</h2>
-          <p>Find Items On Sale With 50 - 75%</p>
-          <div class="rating-badge" aria-label="Rating 4.9 stars" role="img">
-            <svg class="icon icon-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-            <span>4.9</span>
-          </div>
-        </div>
-      </article>
+        <aside class="right-sidebar">
+            <!-- Our Team Section -->
+            <div class="team-section shadow">
+                <h4 class="section-title uppercase">Our Team</h4>
+                <div class="team-members">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team member" class="team-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team member" class="team-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Team member" class="team-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Team member" class="team-avatar">
+                </div>
+                <p class="team-description">Our Team designs luxurious minimalist furniture.</p>
+            </div>
 
-      <article class="card exclusive-product-card" role="region" aria-label="Exclusive Product">
-        <div class="badge-exclusive">EXCLUSIVE</div>
-        <h3>PureSpace Focus Duo</h3>
-        <p>Sleek, minimalist design for ultimate productivity and comfort.</p>
-        <div class="product-image-container">
-          <img src="https://via.placeholder.com/150x150?text=Floral+Chair" alt="Floral patterned chair" />
-        </div>
-        <button class="icon-btn heart-btn exclusive-heart" aria-label="Favorite exclusive product" aria-pressed="false">
-          <svg class="icon icon-heart" viewBox="0 0 24 24"><path d="M..." /></svg>
-        </button>
-        <button class="open-btn" aria-label="Open product details">
-          Open
-          <svg class="icon icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </button>
-      </article>
-    </section>
+            <!-- Get a Bonus Section -->
+            <div class="bonus-section shadow">
+                <h4 class="section-title uppercase">Get a Bonus</h4>
+                <p class="team-description">Discover our latest exclusive items.</p>
+                
+                <form class="subscribe-form">
+                    <input type="email" class="email-input" placeholder="Email" required>
+                    <button type="submit" class="subscribe-btn bg-black">Subscribe</button>
+                </form>
+            </div>
 
-    <aside class="right-sidebar">
-      <section class="team-section" aria-labelledby="team-heading">
-        <h2 id="team-heading">OUR TEAM</h2>
-        <div class="team-avatars">
-          <img src="https://via.placeholder.com/48" alt="Team member 1" />
-          <img src="https://via.placeholder.com/48" alt="Team member 2" />
-          <img src="https://via.placeholder.com/48" alt="Team member 3" />
-          <img src="https://via.placeholder.com/48" alt="Team member 4" />
-        </div>
-        <p class="team-description">Our Team designs luxurious minimalist furniture.</p>
-      </section>
+            <!-- Second Our Team Card -->
+            <div class="team-card shadow">
+                <div class="team-card-content">
+                    <h4 class="section-title uppercase">Our Team</h4>
+                    <p class="team-description">Join us, stay tuned for more news and share your thoughts.</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                     alt="Wooden table leg" class="table-leg">
+            </div>
+        </aside>
+    </main>
 
-      <section class="bonus-section" aria-labelledby="bonus-heading">
-        <h2 id="bonus-heading">GET A BONUS</h2>
-        <p>Discover our latest exclusive items.</p>
-        <form id="subscribe-form" novalidate>
-          <input type="email" id="email" name="email" placeholder="Email" aria-label="Email for subscription" required />
-          <button type="submit" disabled>Subscribe</button>
-          <span class="error-message" aria-live="polite"></span>
-        </form>
-      </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle favorite buttons
+            const favoriteButtons = document.querySelectorAll('.action-btn .fa-heart, .exclusive-card .action-btn');
+            
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const icon = this.querySelector('i') || this;
+                    icon.classList.toggle('far');
+                    icon.classList.toggle('fas');
+                    icon.classList.toggle('favorited');
+                    
+                    // Add aria-pressed state for accessibility
+                    const isPressed = icon.classList.contains('fas');
+                    icon.setAttribute('aria-pressed', isPressed);
+                });
+            });
 
-      <section class="team-news-section" aria-labelledby="news-heading">
-        <h2 id="news-heading">OUR TEAM</h2>
-        <p>Join us, stay tuned for more news and share your thoughts.</p>
-        <div class="news-image-container">
-          <img src="https://via.placeholder.com/150x100?text=Table+Leg" alt="Wooden table leg" />
-        </div>
-      </section>
-    </aside>
-  </main>
+            // Category buttons
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
 
-<script src="script.js"></script>
+            // Search functionality
+            const searchBtn = document.querySelector('.search-btn');
+            const searchInput = document.querySelector('.search-input');
+            
+            searchBtn.addEventListener('click', function() {
+                if (searchInput.value.trim()) {
+                    alert(`Searching for: ${searchInput.value}`);
+                    // In a real app, you would submit the search or filter results
+                }
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    alert(`Searching for: ${this.value}`);
+                }
+            });
+
+            // Open button functionality
+            const openBtn = document.querySelector('.open-btn');
+            
+            openBtn.addEventListener('click', function() {
+                alert('Opening exclusive product details');
+            });
+
+            // Subscribe form validation
+            const subscribeForm = document.querySelector('.subscribe-form');
+            
+            subscribeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('.email-input');
+                const email = emailInput.value.trim();
+                
+                if (!email) {
+                    alert('Please enter your email address');
+                    return;
+                }
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                alert(`Thank you for subscribing with ${email}!`);
+                emailInput.value = '';
+            });
+
+            // Navigation arrows (simulated carousel)
+            const prevArrow = document.querySelector('.fa-chevron-left').parentElement;
+            const nextArrow = document.querySelector('.fa-chevron-right').parentElement;
+            
+            prevArrow.addEventListener('click', function() {
+                alert('Showing previous product');
+                // In a real app, this would navigate a carousel
+            });
+            
+            nextArrow.addEventListener('click', function() {
+                alert('Showing next product');
+                // In a real app, this would navigate a carousel
+            });
+        });
+    </script>
 </body>
 </html>
