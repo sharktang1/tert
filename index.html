@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniture Haven | Modern Home Furnishings</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        :root {
+            --primary-bg: #f9f9f7;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --accent-color: #000000;
+            --rating-color: #ffb800;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button, input {
+            font-family: inherit;
+        }
+
+        /* Utility Classes */
+        .flex {
+            display: flex;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .search-bar {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 1px solid #e0e0e0;
+            background-color: var(--card-bg);
+            font-size: 14px;
+            padding-left: 45px;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-icon:hover {
+            opacity: 0.8;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background-color: var(--card-bg);
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Product Cards */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .new-deals .product-image {
+            height: 250px;
+        }
+
+        .great-value .product-image {
+            height: 300px;
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: var(--border-radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .product-actions {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .action-btn.favorite.active {
+            color: #ff3b30;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: var(--rating-color);
+        }
+
+        .rating-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .open-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .open-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* New Deals Navigation */
+        .deals-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .nav-arrow {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .nav-arrow:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Great Value Card */
+        .great-value {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .great-value {
+                grid-column: span 1;
+            }
+        }
+
+        .value-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            max-width: 60%;
+        }
+
+        .value-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .value-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .team-avatar {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .bonus-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bonus-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .subscribe-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .subscribe-btn:hover {
+            opacity: 0.9;
+        }
+
+        .team-card {
+            position: relative;
+            min-height: 150px;
+            overflow: hidden;
+        }
+
+        .team-text {
+            position: relative;
+            z-index: 2;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .team-image {
+            position: absolute;
+            right: -30px;
+            bottom: -30px;
+            width: 150px;
+            height: 150px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 0;
+            }
+
+            .logo {
+                align-self: flex-start;
+            }
+
+            .search-bar {
+                position: static;
+                transform: none;
+                width: 100%;
+                order: 3;
+            }
+
+            .nav-actions {
+                align-self: flex-end;
+            }
+
+            .categories {
+                padding: 10px 0;
+            }
+
+            .category-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <a href="#" class="logo" aria-label="Furniture Haven Home">FurnitureHaven</a>
+            
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search for furniture..." aria-label="Search for products">
+            </div>
+            
+            <div class="nav-actions">
+                <button class="nav-icon" aria-label="Download our app">📱</button>
+                <button class="nav-icon" aria-label="View favorites">❤️</button>
+                <button class="nav-icon" aria-label="Shopping cart">🛍️</button>
+                <div class="user-profile">
+                    <div class="user-avatar" aria-label="User profile"></div>
+                    <span class="user-name">Alex</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Categories -->
+        <div class="categories">
+            <button class="category-btn active">Table</button>
+            <button class="category-btn">Dressers</button>
+            <button class="category-btn">Sofa</button>
+            <button class="category-btn">Chair</button>
+            <button class="category-btn">Bed</button>
+            <button class="category-btn">Lamps</button>
+            <button class="category-btn">Speakers</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Product Grid -->
+            <div class="product-grid">
+                <!-- New Deals Card -->
+                <div class="product-card new-deals">
+                    <div class="product-image">
+                        <!-- Image placeholder for curved beige sofa -->
+                        <div style="width: 100%; height: 100%; background-color: #f5e6d0;"></div>
+                        <div class="product-actions">
+                            <button class="action-btn favorite" aria-label="Add to favorites">❤️</button>
+                            <button class="action-btn" aria-label="Add to cart">🛒</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-price">$508</div>
+                        <div class="product-rating">
+                            <span class="rating-stars">⭐</span>
+                            <span class="rating-value">4.9</span>
+                        </div>
+                        <h3 class="product-title">Curved Beige Sofa</h3>
+                    </div>
+                    <div class="deals-nav">
+                        <button class="nav-arrow prev" aria-label="Previous deal">◀</button>
+                        <button class="nav-arrow next" aria-label="Next deal">▶</button>
+                    </div>
+                </div>
+
+                <!-- Great Value Deals Card -->
+                <div class="product-card great-value">
+                    <div class="product-image">
+                        <!-- Image placeholder for minimalistic chair -->
+                        <div style="width: 100%; height: 100%; background-color: #e8e8e8;"></div>
+                        <div class="value-overlay">
+                            <div class="value-title">Great Value Deals</div>
+                            <div class="value-subtitle">Find Items On Sale With 50 - 75%</div>
+                        </div>
+                        <div class="product-rating" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.8); padding: 5px 10px; border-radius: var(--border-radius-sm);">
+                            <span class="rating-stars">⭐</span>
+                            <span class="rating-value">4.9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exclusive Product Card -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <!-- Image placeholder for exclusive product -->
+                        <div style="width: 100%; height: 100%; background-color: #d9e0e5;"></div>
+                        <div class="product-tag">EXCLUSIVE</div>
+                        <button class="action-btn favorite" style="top: 15px; right: 15px;" aria-label="Add to favorites">❤️</button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">PureSpace Focus Duo</h3>
+                        <p class="product-desc">Minimalist design with premium materials for modern living spaces.</p>
+                        <button class="open-btn" aria-label="View product details">
+                            Open <span>→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Team Section -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Our Team</h3>
+                    <div class="team-members">
+                        <div class="team-avatar" aria-label="Team member 1"></div>
+                        <div class="team-avatar" aria-label="Team member 2"></div>
+                        <div class="team-avatar" aria-label="Team member 3"></div>
+                        <div class="team-avatar" aria-label="Team member 4"></div>
+                    </div>
+                </div>
+
+                <!-- Bonus Form -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Get a Bonus</h3>
+                    <p class="bonus-desc">Subscribe to our newsletter and get 10% off your first order.</p>
+                    <form class="bonus-form" id="subscribeForm">
+                        <input type="email" class="email-input" placeholder="Your email address" required aria-label="Email address">
+                        <button type="submit" class="subscribe-btn">Subscribe</button>
+                    </form>
+                </div>
+
+                <!-- Team Card -->
+                <div class="sidebar-card team-card">
+                    <h3 class="sidebar-title">Our Team</h3>
+                    <p class="team-text">Crafting beautiful furniture with passion and attention to detail since 2010.</p>
+                    <div class="team-image" aria-label="Our craftsmanship"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Favorite button functionality
+            const favoriteButtons = document.querySelectorAll('.favorite');
+            favoriteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const ariaLabel = this.classList.contains('active') ? 
+                        'Remove from favorites' : 'Add to favorites';
+                    this.setAttribute('aria-label', ariaLabel);
+                });
+            });
+
+            // New deals navigation
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            
+            prevBtn.addEventListener('click', function() {
+                alert('Previous deal clicked - would slide to previous item in a real implementation');
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                alert('Next deal clicked - would slide to next item in a real implementation');
+            });
+
+            // Open button functionality
+            const openBtn = document.querySelector('.open-btn');
+            openBtn.addEventListener('click', function() {
+                alert('Opening product details for PureSpace Focus Duo');
+            });
+
+            // Category buttons
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Form validation
+            const subscribeForm = document.getElementById('subscribeForm');
+            subscribeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('.email-input');
+                if (emailInput.value && emailInput.checkValidity()) {
+                    alert('Thank you for subscribing!');
+                    this.reset();
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            const searchIcon = document.querySelector('.search-icon');
+            
+            searchIcon.addEventListener('click', function() {
+                if (searchInput.value.trim()) {
+                    alert(`Searching for: ${searchInput.value}`);
+                }
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    alert(`Searching for: ${this.value}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
